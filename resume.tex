@@ -1,0 +1,458 @@
+%-----------------------------------------------------------------------------------------------------------------------------------------------%
+%	The MIT License (MIT)
+%
+%	Copyright (c) 2015 Jan Küster
+%
+%	Permission is hereby granted, free of charge, to any person obtaining a copy
+%	of this software and associated documentation files (the "Software"), to deal
+%	in the Software without restriction, including without limitation the rights
+%	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+%	copies of the Software, and to permit persons to whom the Software is
+%	furnished to do so, subject to the following conditions:
+%	
+%	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+%	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+%	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+%	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+%	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+%	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+%	THE SOFTWARE.
+%	
+%
+%-----------------------------------------------------------------------------------------------------------------------------------------------%
+
+
+%============================================================================%
+%
+%	DOCUMENT DEFINITION
+%
+%============================================================================%
+
+%we use article class because we want to fully customize the page and dont use a cv template
+\documentclass[10pt,A4]{article}	
+
+
+%----------------------------------------------------------------------------------------
+%	ENCODING
+%----------------------------------------------------------------------------------------
+
+%we use utf8 since we want to build from any machine
+\usepackage[utf8]{inputenc}		
+\usepackage[export]{adjustbox}
+\usepackage{hyperref}
+
+%----------------------------------------------------------------------------------------
+%	LOGIC
+%----------------------------------------------------------------------------------------
+
+% provides \isempty test
+\usepackage{xifthen}
+\usepackage{tikz}
+
+%----------------------------------------------------------------------------------------
+%	FONT
+%----------------------------------------------------------------------------------------
+% some tex-live fonts - choose your own
+
+%\usepackage[defaultsans]{droidsans}
+%\usepackage[default]{comfortaa}
+%\usepackage{cmbright}
+\usepackage[default]{raleway}
+%\usepackage{fetamont}
+%\usepackage[default]{gillius}
+%\usepackage[light,math]{iwona}
+%\usepackage[thin]{roboto} 
+
+% set font default
+\renewcommand*\familydefault{\sfdefault} 	
+\usepackage[T1]{fontenc}
+
+% more font size definitions
+\usepackage{moresize}		
+
+
+%----------------------------------------------------------------------------------------
+%	PAGE LAYOUT  DEFINITIONS
+%----------------------------------------------------------------------------------------
+
+%debug page outer frames
+%\usepackage{showframe}			
+
+
+%define page styles using geometry
+\usepackage[a4paper]{geometry}		
+
+% for example, change the margins to 2 inches all round
+\geometry{top=1.75cm, bottom=.2cm, left=1.5cm, right=1.5cm} 	
+
+%use customized header
+%less space between header and content
+\setlength{\headheight}{-5pt}		
+
+
+%customize entries left, center and right
+%\lhead{}
+%\chead{}
+%\rhead{}
+
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% Configure the fancyhdr package
+\pagestyle{fancy}
+
+% Set up the footer with the name and page number
+
+%indentation is zero
+\setlength{\parindent}{0mm}
+
+%----------------------------------------------------------------------------------------
+%	TABLE /ARRAY DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+
+%for layouting tables
+\usepackage{multicol}			
+\usepackage{multirow}
+\usepackage{xparse}
+
+%extended aligning of tabular cells
+\usepackage{array}
+
+\newcolumntype{x}[1]{%
+>{\raggedleft\hspace{0pt}}p{#1}}%
+
+
+%----------------------------------------------------------------------------------------
+%	GRAPHICS DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+
+%for header image
+
+\usepackage{graphicx}
+
+%for floating figures
+\usepackage{wrapfig}
+\usepackage{float}
+%\floatstyle{boxed} 
+%\restylefloat{figure}
+
+%for drawing graphics		
+\usepackage{tikz}				
+\usetikzlibrary{shapes, backgrounds,mindmap, trees}
+
+%----------------------------------------------------------------------------------------
+%	Color DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+
+\usepackage{color}
+
+%accent color
+\definecolor{sectcol}{RGB}{51,153,255}
+
+%dark background color
+\definecolor{bgcol}{RGB}{110,110,110}
+
+%light background / accent color
+\definecolor{softcol}{RGB}{225,225,225}
+
+
+%============================================================================%
+%
+%
+%	DEFINITIONS
+%
+%
+%============================================================================%
+
+%----------------------------------------------------------------------------------------
+% 	HEADER
+%----------------------------------------------------------------------------------------
+
+% remove top header line
+\renewcommand{\headrulewidth}{0pt} 
+
+%remove botttom header line
+\renewcommand{\footrulewidth}{0pt}	  	
+
+%remove pagenum
+\renewcommand{\thepage}{}	
+
+%remove section num		
+\renewcommand{\thesection}{}			
+
+%----------------------------------------------------------------------------------------
+% 	ARROW GRAPHICS in Tikz
+%----------------------------------------------------------------------------------------
+
+% a six pointed arrow poiting to the left
+\newcommand{\tzlarrow}{(0,0) -- (0.2,0) -- (0.3,0.2) -- (0.2,0.4) -- (0,0.4) -- (0.1,0.2) -- cycle;}	
+
+% include the left arrow into a tikz picture
+% param1: fill color
+%
+\newcommand{\larrow}[1]
+{\begin{tikzpicture}[scale=0.58]
+	 \filldraw[fill=#1!100,draw=#1!100!black]  \tzlarrow
+ \end{tikzpicture}
+}
+
+% a six pointed arrow poiting to the right
+\newcommand{\tzrarrow}{ (0,0.2) -- (0.1,0) -- (0.3,0) -- (0.2,0.2) -- (0.3,0.4) -- (0.1,0.4) -- cycle;}
+
+% include the right arrow into a tikz picture
+% param1: fill color
+%
+\newcommand{\rarrow}
+{\begin{tikzpicture}[scale=0.7]
+	\filldraw[fill=sectcol!100,draw=sectcol!100!black] \tzrarrow
+ \end{tikzpicture}
+}
+
+
+
+%----------------------------------------------------------------------------------------
+%	custom sections
+%----------------------------------------------------------------------------------------
+
+% create a coloured box with arrow and title as cv section headline
+% param 1: section title
+%
+\newcommand{\cvsection}[1]
+{
+	\begin{center}
+		\large\textcolor{sectcol}{\textbf{#1}}
+	\end{center}
+}
+
+%create a coloured arrow with title as cv meta section section
+% param 1: meta section title
+%
+\newcommand{\metasection}[2]
+{
+%\begin{tabular*}{1\textwidth}{r r}
+\footnotesize{#2} \hspace*{\fill} \footnotesize{#1}\\[1pt]
+%\end{tabular*}
+}
+
+%----------------------------------------------------------------------------------------
+%	 CV EVENT
+%----------------------------------------------------------------------------------------
+
+% creates a stretched box as cv entry headline followed by two paragraphs about 
+% the work you did
+% param 1:	event time i.e. 2014 or 2011-2014 etc.
+% param 2:	event name (what did you do?)
+% param 3:	institution (where did you work / study)
+% param 4:	what was your position
+% param 5:	some words about your contributions
+%
+
+\DeclareDocumentCommand \cvevent {m m m m o o}
+{
+\begin{tabular*}{1\textwidth}{p{13.6cm}  x{3.9cm}}
+	\textbf{#2} - \textcolor{bgcol}{#3} &   \vspace{2.5pt}\textcolor{sectcol}{#1}
+\end{tabular*}
+
+\vspace{-8pt}
+\textcolor{softcol}{\hrule}
+\vspace{6pt}
+
+  $\cdot$ #4\\[3pt]
+    \IfNoValueTF{#5}%
+        {\\[3pt]}%
+        {$\cdot$ #5\\[3pt]}%
+    \IfNoValueTF{#6}%
+        {}%
+        {$\cdot$ #6\\[8pt]}%
+}
+\DeclareDocumentCommand \cvskill {m m}
+{
+\begin{tabular*}{1\textwidth}{p{13.6cm}  x{3.9cm}}
+	\textbf{#1} : \textcolor{bgcol}{#2} &   \vspace{2.5pt}
+\end{tabular*}
+
+\vspace{-8pt}
+\textcolor{softcol}{\hrule}
+\vspace{6pt}
+}
+
+\DeclareDocumentCommand \cvinterest {m m}
+{
+\begin{tabular*}{1\textwidth}{p{13.6cm}  x{3.9cm}}
+	\textbf{#1} : \textcolor{bgcol}{#2} & \vspace{8pt}
+\end{tabular*}
+}
+
+% creates a stretched box as 
+\newcommand{\cveventmeta}[2]
+{
+	\mbox{\mystrut \hspace{87pt}\textit{#1}}\\
+	#2
+}
+
+%----------------------------------------------------------------------------------------
+% CUSTOM STRUT FOR EMPTY BOXES
+%----------------------------------------- -----------------------------------------------
+\newcommand{\mystrut}{\rule[-.3\baselineskip]{0pt}{\baselineskip}}
+
+%----------------------------------------------------------------------------------------
+% CUSTOM LOREM IPSUM
+%----------------------------------------------------------------------------------------
+\newcommand{\lorem}
+{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus.}
+
+
+
+%============================================================================%
+%
+%
+%
+%	DOCUMENT CONTENT
+%
+%
+%
+%============================================================================%
+\begin{document}
+
+\pagenumbering{arabic}
+
+%use our custom fancy header definitions
+
+
+%----------------------------------------------------------------------------------------
+%	HEADER IMAGE
+%----------------------------------------------------------------------------------------
+
+%\begin{figure}[H]
+%\begin{flushright}
+%	\includegraphics[trim= 320 130 460 210,clip,width=0.2\linewidth]{myfoto.jpg}	%trimming relative to image size!
+%\end{flushright}
+%\end{figure}
+
+
+%---------------------------------------------------------------------------------------
+%    TITLE HEADLINE
+%----------------------------------------------------------------------------------------
+\vspace{-8pt}
+\begin{minipage}{0.8\textwidth}
+    \HUGE \textsc{Ahmet Hakan Duman} \\[3pt]
+    \normalsize Control Systems Engineer \\ [3pt]
+    \footnotesize
+    \raisebox{-0.9ex}{\includegraphics[height=1.5em]{at.png}} ahmethakanduman@outlook.com \hspace{0.2cm}\raisebox{-0.6ex}{\includegraphics[height=1.5em]{phone.png}} +49 178 1045086  \hspace{0.2cm} \raisebox{-0.6ex}{\includegraphics[height=1.5em]{location.png}} Aachen, Germany \hspace{0.2cm} \raisebox{-1.5ex}{\href{http://www.linkedin.com/in/ahduman}{\includegraphics[height=2.3em]{in.png}}} \hspace{0.2cm} \raisebox{-1ex}{\href{http://www.github.com/dumanah}{\includegraphics[height=1.8em]{github.png}}}
+
+\end{minipage}
+\begin{tikzpicture}[baseline={(current bounding box.center)},thick]
+\clip (0,0)  circle (1.7cm) ;
+\node {\includegraphics[width=3.4cm]{xing_pp.jpg}}; 
+%adjust this coordinate to move image
+\end{tikzpicture}
+\vspace{6pt}
+%---------------------------------------------------------------------------------------
+%	META SECTION
+%----------------------------------------------------------------------------------------
+
+\normalsize
+
+%---------------------------------------------------------------------------------------
+%	SUMMARAY (optional)
+%----------------------------------------------------------------------------------------
+\vspace{-6pt}
+\cvsection{Summary}
+Highly motivated recent master's graduate from RWTH Aachen with expertise in advanced control systems and a strong theoretical background in modeling, simulation, and control of dynamic systems. Seeking a challenging role as a Research Engineer in the field of dynamic systems and control, robotics, embedded systems with a focus on innovative applications. \\ 
+
+
+
+%============================================================================%
+%
+%	CV SECTIONS AND EVENTS (MAIN CONTENT)
+%
+%============================================================================%
+
+
+%---------------------------------------------------------------------------------------
+%	EDUCATION SECTION
+%--------------------------------------------------------------------------------------
+\cvsection{Education}
+
+\cvevent{09.2020 - 04.2024}{M.Sc. Elec. Eng., Information Tech. and Computer Eng.}{RWTH Aachen University}{Major: Systems and Automation (GPA: 2.5/4)}[Thesis: A structure-exploiting SDP solver for discrete LTV robust controller synthesis][Relevant Coursework: Optimal Control, Modern Control Systems, Embedded Systems, Robotics
+]
+
+%\textcolor{softcol}{\hrule}
+
+%
+\cvevent{09.2015 - 08.2019}{B.Sc. Control and Automation Eng. }{Istanbul Technical University}{Final Project: Trajectory Tracking with Model Predictive Control for a Wheeled Mobile Robot}
+
+%\textcolor{softcol}{\hrule}
+
+
+%---------------------------------------------------------------------------------------
+%	WORK EXPERIENCE
+%----------------------------------------------------------------------------------------
+\cvsection{Experience}
+\cvevent{08.2022-10.2022}{Student Assistant}{RWTH Aachen University - Aachen, Germany}{Conducted simulations using Simulink on a condor computer cluster, analyzing complex control systems}
+\cvevent{10.2021 – 03.2022}{Internship}{STIHL - Stuttgart, Germany}{Developed a sensor box to measure environmental values, relevant to autonomous systems}
+[Programmed microcontrollers and Raspberry Pi for sensor data acquisition and processing]
+[Created Python scripts for automated data analysis and visualization]
+%
+\cvevent{07.2018-09.2018}{Internship}{Baykar Technologies - Istanbul, Türkiye}{Programmed microcontrollers for smart systems, developing skills applicable to vehicle control units
+}
+
+%\textcolor{softcol}{\hrule}
+
+%
+%\cvevent{08.2022-11.2022}{Student Assistant}{RWTH Aachen University - Aachen, Germany}{Ran Simulink simulations on a computer cluster using Condor for large-scale control system analysis}
+
+
+%---------------------------------------------------------------------------------------
+%	PROJECTS
+%----------------------------------------------------------------------------------------
+\cvsection{Projects}
+\cvevent{03.2022-07.2022}{\href{https://github.com/dumanah/ddp-jax}{Differential Dynamic Programming}}{RWTH Aachen University - Aachen, Germany}{Implemented Differential Dynamic Programming algorithm using JAX library to exploit automatic differentiation}[Applied the algorithm for motion planning of cart-pole / double inverted pendulum applications]
+
+\cvevent{09.2017-06.2018}{Autonomous Mobile Robot Development}{ITU Rover Team}
+{Programmed STM32 microcontrollers for speed and position control systems}
+[Collaborated with interdisciplinary team members to integrate control systems]
+
+\null
+\vspace*{\fill}
+{\footnotesize \hfill \textcolor{bgcol}{Ahmet Hakan Duman - Resume} \hfill \textcolor{bgcol}{\thepage}}
+
+
+\newpage
+
+%---------------------------------------------------------------------------------------
+%	SKILLS
+%----------------------------------------------------------------------------------------
+\cvsection{Skills}
+
+\cvskill{Programmierung}{MATLAB, Python, C, C++}
+\cvskill{Software}{Linux, MS Office}
+\cvskill{Control Systems}{Control Theory, Model Predictive Control, Robust Control} 
+\cvskill{Embedded Systems}{STM32, Communication Protocols: UART,I2C,SPI, Encoders}
+\cvskill{Languages}{English (Fluent), German (A2-B1), Turkish (Mother tongue)}
+%---------------------------------------------------------------------------------------
+%	INTERESTS
+%----------------------------------------------------------------------------------------
+\cvsection{Interests}
+
+\cvinterest{Sports} {Table tennis, Amateur licensed football player, Snooker enthusiast}
+\cvinterest{Music}{Electric guitar player over 10 years}
+\cvinterest{DIY Projects:}  {Custom Electric Guitar, 3D Printer, Smart LED table lamp}
+
+%--------------------------------------------------------------------------------------------------
+%	ARTIFICIAL FOOTER (fancy footer cannot exceed linewidth) 
+%--------------------------------------------------------------------------------------------------
+\null
+\vspace*{\fill}
+\footnotesize \hfill \textcolor{bgcol}{Ahmet Hakan Duman - Resume} \hfill \textcolor{bgcol}{\thepage}
+
+%============================================================================%
+%
+%
+%
+%	DOCUMENT END
+%
+%
+%
+%============================================================================%
+\end{document}
