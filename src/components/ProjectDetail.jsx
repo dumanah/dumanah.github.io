@@ -30,7 +30,8 @@ const ProjectDetail = () => {
         "Power Supply": "12-30V DC"
       },
       images: [
-        "/images/actuator-exploded.gif"
+        "/images/actuator-exploded.gif",
+        "/images/actuator-board.png"
       ]
     },
     'snooker-vision': {
