@@ -56,7 +56,7 @@ const ProjectDetail = () => {
         "Model Training": "Supervised learning YOLO models"
       },
       images: [
-        "/images/snooker-vision.gif",
+        "/images/topshots.gif",
       ]
     },
     'ddp-jax': {
